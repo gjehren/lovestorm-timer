@@ -83,16 +83,16 @@
     const subText = `Current interval ends at ${endLocal}. Next interval starts at ${startLocal}.`;
 
     // Fade effect for a smoother visual update
-    timerEl.classList.add('hidden');
-    setTimeout(() => {
-      countEl.textContent = `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
-      infoEl.textContent  = subText;
-      timerEl.classList.remove('hidden');
-    }, 150);
+    //timerEl.classList.add('hidden');
+    //setTimeout(() => {
+      //countEl.textContent = `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+      //infoEl.textContent  = subText;
+      //timerEl.classList.remove('hidden');
+    //}, 150);
   }
 
-  update();                // initial render
-  setInterval(update,1000);// refresh each second
+  //update();                // initial render
+  //setInterval(update,1000);// refresh each second
 })();
 </script>
 </body>
