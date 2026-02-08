@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lovestorm Timer</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f0f4f8;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .timer {
+    background: #fff;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.1);
+    text-align: center;
+    transition: opacity .3s ease;
+  }
+  .timer.hidden { opacity: 0; }
+  h1 { margin: 0 0 .5rem; font-size: 1.8rem; }
+  .count { font-size: 2.5rem; letter-spacing: .05em; }
+</style>
+</head>
+
+<body>
+<div class="timer" id="timer">
+  <h1>Next Lovestorm in:</h1>
+  <div class="count" id="countdown">--:--:--</div>
+</div>
+
+<script>
+(() => {
+  const timerEl = document.getElementById('timer');
+  const countEl = document.getElementById('countdown');
+
+  // Helper: zero‑pad numbers
+  const pad = n => String(n).padStart(2, '0');
+
+  // Reference start: 7 PM EST, Feb 8 2026
+  // EST = UTC‑5 (no daylight‑saving consideration for this fixed date)
+  const startUTC = Date.UTC(2026, 1, 8, 19 + 5, 0, 0); // month is 0‑based
+
+  const INTERVAL_MS = 3 * 60 * 60 * 1000; // three hours
+
+  function update() {
+    const now = Date.now();
+
+    // How many whole intervals have passed since the reference?
+    const elapsed = now - startUTC;
+    const intervalsPassed = Math.floor(elapsed / INTERVAL_MS);
+
+    // Start of the *next* interval
+    const nextIntervalStart = startUTC + (intervalsPassed + 1) * INTERVAL_MS;
+
+    // Target = end of that interval (start + 3 h)
+    const target = nextIntervalStart + INTERVAL_MS;
+
+    const diff = target - now;
+
+    if (diff <= 0) {
+      // Edge case – just in case the clock jumps forward
+      countEl.textContent = '00:00:00';
+      return;
+    }
+
+    const hrs = Math.floor(diff / (1000 * 60 * 60));
+    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+    // Fade effect when seconds change
+    timerEl.classList.add('hidden');
+    setTimeout(() => {
+      countEl.textContent = `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+      timerEl.classList.remove('hidden');
+    }, 150);
+  }
+
+  // Initial run & then every second
+  update();
+  setInterval(update, 1000);
+})();
+</script>
+</body>
+</html>
