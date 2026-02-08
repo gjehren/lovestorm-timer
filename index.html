@@ -75,7 +75,7 @@
     const startLocal = endLocal; // same instant – start of next interval
 
     countEl.textContent = `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
-    infoEl.textContent  = `Current interval ends at ${endLocal}.`;
+    infoEl.textContent  = `${endLocal}.`;
   }
 
   update();                // initial display
